@@ -5,10 +5,10 @@ c:\> cscript.exe vbs_wav_open9x.vbs en-stock_open9x.csv en-stock.zip 100 0
  
  or doube click en-stock_open9x.cmd
 
-This code generate wavs from csv on .\temp folder and .\ folder zip file
+This code generate wavs and AD4 from csv on .\temp folder and .\ folder zip file
 with default (actual TTS voice)
 
-
+NOT TESTED THIS PROJECT!!!!
 
 
 REQUIRED:
@@ -37,12 +37,14 @@ skipped row if no speaktext.
 FUNCTIONS:
 trimming output audio silent block.
 normalize
-A-law output conversion 16Khz/8bit
+optional (commented char ' this line on source) A-law output conversion 16Khz/8bit .wav
+output conversion 16Khz/16bit .wav
+output conversion 32kHz/4bit ADPCM .AD4
 if necessary, replace the codec, from vbs file line: ~168
 
 REMARK:
 Magic number: (wav output format):
-Magic number, possibly voice specific (0 to 64)
+Magic number, possibly voice specific (0 to 64) please decrement if generate wrong wavs.
 
 
 

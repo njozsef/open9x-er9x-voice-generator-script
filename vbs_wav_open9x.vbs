@@ -48,7 +48,7 @@ ReadTextFile(SourceFile)
 dim filesys1
 Set filesys1 = CreateObject("Scripting.FileSystemObject")
 If filesys1.FileExists(DestZipFile) Then
-        filesys.DeleteFile DestZipFile
+        filesys1.DeleteFile DestZipFile
 End If
 set filesys1 = Nothing
 
