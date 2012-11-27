@@ -45,6 +45,14 @@ Set oFSO = Nothing
 ReadTextFile(SourceFile)
 
 'ziping
+dim filesys1
+Set filesys1 = CreateObject("Scripting.FileSystemObject")
+If filesys1.FileExists(DestZipFile) Then
+        filesys.DeleteFile DestZipFile
+End If
+set filesys1 = Nothing
+
+
 Dim objResult, objShell
 WScript.Echo "zipping..."
 WScript.Echo DestZipFile
@@ -114,7 +122,8 @@ If Len(strText)=0 Then Exit sub
 
 'sapifiletype defined the output wav format: 18=22Khz 16bit mono on "KobaSpeech 2 With Vocalizer Eszter - Hungarian" voice font
 'Magic number, possibly voice specific (0 to 64)
-Const SapiFileType=31
+'if destination wav wrong, please decrease the Sapifiletype step -1. Sorry.
+Const SapiFileType=48
 
 With CreateObject("Scripting.FileSystemObject")
  strFile=.BuildPath(.GetParentFolderName(WScript.ScriptFullName), strFileName & ".wav")
@@ -156,8 +165,15 @@ WScript.Echo "Trim silent..."
 objShell.Run "c:\sox\sox.exe " & strFileName & " " & "trimmedtemp.wav" & " " & "silence 1 0.01 0.5% reverse silence 1 0.01 0.5% reverse", 0, True
 filesys.DeleteFile strFileName
 filesys.MoveFile "trimmedtemp.wav", strFileName
+ 
 
-WScript.Echo "Normalize and Convert 16Khz 8bit wav..."
+WScript.Echo "Generete AD4..."
+objShell.Run "c:\sox\sox.exe " & strFileName & " --norm  -c 1 -t .wav -b 16 -r 32000  tempconvert.wav", 0, True
+objShell.Run "AD4CONVERTER.EXE -E4 " & "tempconvert.wav " & left(strFileName,len(strFileName)-4) & ".AD4", 0, True
+filesys.DeleteFile "tempconvert.wav"
+
+
+WScript.Echo "Normalize and Convert 16Khz wav..."
 '
 '-c 1= number of channels of destination file: 1
 '-A = encoding of destination file: a-law
@@ -165,9 +181,10 @@ WScript.Echo "Normalize and Convert 16Khz 8bit wav..."
 '-r 16000= sampling rate of destination file: 8kHz
 '-b 8= 8 bit audio
 '
-objShell.Run "c:\sox\sox.exe " & strFileName & " --norm  -c 1 -A -t .wav -b 8 -r 16000  trimmedtemp.wav", 0, True
+'objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -A -t .wav -b 8 -r 16000  tempconvert.wav", 0, True
+objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -t .wav -b 16 -r 16000  tempconvert.wav", 0, True
 filesys.DeleteFile strFileName
-filesys.MoveFile "trimmedtemp.wav", strFileName
+filesys.MoveFile "tempconvert.wav", strFileName
 
 
 Set objShell = Nothing
