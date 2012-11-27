@@ -18,7 +18,7 @@ windows xp/window7  (32 bit)
 installed Text-to speech voice font your machine
 
 tools:
-Sox.exe (recommended path: c:\voice)
+Sox.exe (recommended path: c:\sox\)
 Pkzip.exe (recommended path: .\ )
 
 
