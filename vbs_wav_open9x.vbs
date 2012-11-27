@@ -4,7 +4,7 @@
 '* from the google.com   :-)              *
 '******************************************
 
-'need ttols:  sox, pkzip
+'need tools:  sox, pkzip, AD4CONVERTER
 'sox path "c:\sox\sox.exe"
 'pkzip.exe copy this folder
 
@@ -181,7 +181,11 @@ WScript.Echo "Normalize and Convert 16Khz wav..."
 '-r 16000= sampling rate of destination file: 8kHz
 '-b 8= 8 bit audio
 '
+
+'8 bit 16kHz
 'objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -A -t .wav -b 8 -r 16000  tempconvert.wav", 0, True
+
+'16 bit 16kHz
 objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -t .wav -b 16 -r 16000  tempconvert.wav", 0, True
 filesys.DeleteFile strFileName
 filesys.MoveFile "tempconvert.wav", strFileName
