@@ -14,34 +14,37 @@ Dim arrFileLines()
 
 'main
 if WScript.Arguments.Count =0 then
-    WScript.Echo "Missing parameters. ""help"" to detailed list.": WScript.Quit
+    WScript.Echo "Missing parameters. ""--help"" to detailed list.": WScript.Quit
 end if
 
-if WScript.Arguments(0) = "help" then
+if WScript.Arguments(0) = "--help" then
 	WScript.Echo "parameters:  tts.vbs source.csv dest.zip volume rate codec"
 	WScript.Echo "                                           |      |    | " 
 	WScript.Echo "                                          0-100  0-5   | "
 	WScript.Echo "                                                       | "
-	WScript.Echo "     codec: e=ematree(default) high=16Khz 16bit ad4=ad4 format"
+	WScript.Echo "     codec: e=ematree(default) high=16Khz 16bit ad4=emartee ad4 format(not tested)"
 	
 	WScript.Quit
 end if
 
-
+'***************************
 'csv format
 '0000;START ENGINE;;
 '0001.wav;;
 '0002
 '0003;flap on
-'
+'***************************
+
 SourceFile = Wscript.Arguments.Item(0)
 DestZipFile =  Wscript.Arguments.Item(1)
 Volume = Wscript.Arguments.Item(2)
 Rate = Wscript.Arguments.Item(3)
 CodecFlag = Wscript.Arguments.Item(4)
+'**************************************
 'e= ematree 8Khz 8bit a-law mono
 'high = 16Khz 16bit PCM mono
 'ad4 = 4bit 32Khz ADPCM mono a-law
+'**************************************
 if len(CodecFlag)=0 then
 	CodecFlag="high"
 end if
@@ -128,20 +131,26 @@ Next
 end sub
 
 sub generatefile(strFileName,strText)
+'***************************************************************************************************
+'speak engine options
 '.Pause = pause speaking 
 '.resume = resume after pause 
 '.Rate = speed at which voice speaks 
 '.Voice = you can use set and a voice value to change the voice (if multiple exist on machine) 
 '.Volume = volume of voice (not system volume, just voice) 
 '.WaitUntilDone = wait until done - dont know how else to say that ;) 
+'***************************************************************************************************
 
 'if empty  audio slot
 If Len(strText)=0 Then Exit sub
 
+'*********************************************************************************************************************************
 'sapifiletype defined the output wav format: 18=22Khz 16bit mono on "KobaSpeech 2 With Vocalizer Eszter - Hungarian" voice font
 'Magic number, possibly voice specific (0 to 64)
 'if destination wav wrong, please decrease the Sapifiletype step -1. Sorry.
 'SAFT48kHz16BitMono = 38
+'please see readme.txt
+'*********************************************************************************************************************************
 Const SapiFileType=38
 
 With CreateObject("Scripting.FileSystemObject")
@@ -180,7 +189,7 @@ Dim  objShell
 Set objShell = WScript.CreateObject("WScript.Shell")    
 
 WScript.Echo "Trim silent..."
-'tune silect cut (begin-end)
+'tune silent cut (begin-end)
 objShell.Run "c:\sox\sox.exe " & strFileName & " " & "trimmedtemp.wav" & " " & "silence 1 0.01 0.5% reverse silence 1 0.01 0.5% reverse", 0, True
 filesys.DeleteFile strFileName
 filesys.MoveFile "trimmedtemp.wav", strFileName
@@ -189,24 +198,25 @@ filesys.MoveFile "trimmedtemp.wav", strFileName
 
 
 
-'
-'-c 1= number of channels of destination file: 1
+'****************** sox opt ************************************
+'-c 1 = number of channels of destination file: 1
 '-A = encoding of destination file: a-law
 '-t .wav = file format of destination file: WAVE
-'-r 16000= sampling rate of destination file: 8kHz
-'-b 8= 8 bit audio
-'
+'-r 16000 = sampling rate of destination file: 8kHz
+'-b 8 = 8 bit audio
+'--norm = normalize
+'***************************************************************
 
 
 if CodecFlag="e" then
-  WScript.Echo "Normalize and Convert Ematree 8bit 8kHz wav..."
+  WScript.Echo "Normalize and Convert Emartee 8bit 8kHz wav..."
   objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -A -t .wav -b 8 -r 8000  tempconvert.wav", 0, True
   filesys.DeleteFile strFileName
   filesys.MoveFile "tempconvert.wav", strFileName
 end if
 
 if CodecFlag="high" then
-  WScript.Echo "Normalize and Convert high quality 16bit 16kHz wav..."
+  WScript.Echo "Normalize and Convert high quality 16bit 16kHz mono wav..."
   objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -t .wav -b 16 -r 16000  tempconvert.wav", 0, True
   filesys.DeleteFile strFileName
   filesys.MoveFile "tempconvert.wav", strFileName
