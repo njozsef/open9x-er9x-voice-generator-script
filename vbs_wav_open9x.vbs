@@ -131,7 +131,8 @@ If Len(strText)=0 Then Exit sub
 'sapifiletype defined the output wav format: 18=22Khz 16bit mono on "KobaSpeech 2 With Vocalizer Eszter - Hungarian" voice font
 'Magic number, possibly voice specific (0 to 64)
 'if destination wav wrong, please decrease the Sapifiletype step -1. Sorry.
-Const SapiFileType=48
+'SAFT48kHz16BitMono = 38
+Const SapiFileType=38
 
 With CreateObject("Scripting.FileSystemObject")
  strFile=.BuildPath(.GetParentFolderName(WScript.ScriptFullName), strFileName & ".wav")
