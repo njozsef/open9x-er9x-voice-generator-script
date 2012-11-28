@@ -36,6 +36,11 @@ Rate = Wscript.Arguments.Item(3)
 WScript.Echo SourceFile, Volume,Rate & vbcrlf
 
 Set oFSO = CreateObject("Scripting.FileSystemObject")
+ If (oFSO.FolderExists(".\temp")) Then
+      oFSO.DeleteFile".\temp\*.*"
+ End If
+ 
+ 
  If(Not(oFSO.FolderExists(".\temp"))) Then
       oFSO.CreateFolder(".\temp")
  End If
