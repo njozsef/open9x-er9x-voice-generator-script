@@ -213,8 +213,8 @@ if CodecFlag="high" then
 end if
 
 if CodecFlag="ad4" then
-WScript.Echo "Generete AD4 16bit 32kHz..."
-objShell.Run "c:\sox\sox.exe " & strFileName & " --norm  -c 1 -t .wav -b 16 -r 32000  tempconvert.wav", 0, True
+WScript.Echo "Generete AD4 16bit 32kHz a-law..."
+objShell.Run "c:\sox\sox.exe " & strFileName & " --norm  -c 1 -A -t .wav -b 16 -r 32000  tempconvert.wav", 0, True
 objShell.Run "AD4CONVERTER.EXE -E4 " & "tempconvert.wav " & left(strFileName,len(strFileName)-4) & ".AD4", 0, True
 filesys.DeleteFile "tempconvert.wav"
 filesys.DeleteFile strFileName
