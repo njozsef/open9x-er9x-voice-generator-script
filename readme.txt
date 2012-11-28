@@ -1,7 +1,10 @@
 USAGE (COMMANDLINE):
-c:\> cscript.exe vbs_wav_open9x.vbs en-stock_open9x.csv en-stock.zip 100 0
+c:\> cscript.exe vbs_wav_open9x.vbs en-stock_open9x.csv en-stock.zip 100 0 codec
  parameter1= volume (0-100)
  parameter2= speed (0~5)
+ parameter3= emartee | ad4 | high
+
+ or doube click en-stock_open9x_emartee.cmd
  
  or doube click en-stock_open9x.cmd
 
