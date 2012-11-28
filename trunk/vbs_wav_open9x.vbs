@@ -54,10 +54,12 @@ set filesys1 = Nothing
 
 
 Dim objResult, objShell
-WScript.Echo "zipping..."
+WScript.Echo "zipping... wavs"
 WScript.Echo DestZipFile
 Set objShell = WScript.CreateObject("WScript.Shell")    
 objShell.Run "pkzip.exe" & " " & DestZipFile & " " & "temp\*.wav", 0, True
+WScript.Echo "zipping... AD4s"
+WScript.Echo "AD-" & DestZipFile
 objShell.Run "pkzip.exe" & " " & "AD-" & DestZipFile & " " & "temp\*.AD4", 0, True
 Set objShell = Nothing
 WScript.Quit
