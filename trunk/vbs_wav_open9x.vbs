@@ -172,8 +172,8 @@ With CreateObject("Sapi.SpVoice")
  Set ss=Nothing
 End With
 
+'silent cut and recode
 call removesilent(strFile)
-
 end sub
 
 
@@ -187,16 +187,12 @@ End If
 
 Dim  objShell
 Set objShell = WScript.CreateObject("WScript.Shell")    
-
 WScript.Echo "Trim silent..."
 'tune silent cut (begin-end)
 objShell.Run "c:\sox\sox.exe " & strFileName & " " & "trimmedtemp.wav" & " " & "silence 1 0.01 0.5% reverse silence 1 0.01 0.5% reverse", 0, True
 filesys.DeleteFile strFileName
 filesys.MoveFile "trimmedtemp.wav", strFileName
  
-
-
-
 
 '****************** sox opt ************************************
 '-c 1 = number of channels of destination file: 1
@@ -206,8 +202,6 @@ filesys.MoveFile "trimmedtemp.wav", strFileName
 '-b 8 = 8 bit audio
 '--norm = normalize
 '***************************************************************
-
-
 if CodecFlag="e" then
   WScript.Echo "Normalize and Convert Emartee 8bit 8kHz wav..."
   objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -A -t .wav -b 8 -r 8000  tempconvert.wav", 0, True
@@ -229,8 +223,6 @@ objShell.Run "AD4CONVERTER.EXE -E4 " & "tempconvert.wav " & left(strFileName,len
 filesys.DeleteFile "tempconvert.wav"
 filesys.DeleteFile strFileName
 end if
-
-
 
 Set objShell = Nothing
 Set filesys = Nothing
