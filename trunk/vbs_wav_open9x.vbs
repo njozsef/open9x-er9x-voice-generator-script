@@ -9,16 +9,22 @@
 'pkzip.exe copy this folder
 
 'parameters
-dim SourceFile, DestZipFile, Volume, Rate
+dim SourceFile, DestZipFile, Volume, Rate, CodecFlag
 Dim arrFileLines()
 
 'main
-if WScript.Arguments.Count < 4 then
+if WScript.Arguments.Count =0 then
     WScript.Echo "Missing parameters. ""help"" to detailed list.": WScript.Quit
 end if
 
 if WScript.Arguments(0) = "help" then
-       WScript.Echo "parameters:  tts.vbs source-.csv-file dest-.zip-file volume(0-100)  rate(0-16)": WScript.Quit
+	WScript.Echo "parameters:  tts.vbs source.csv dest.zip volume rate codec"
+	WScript.Echo "                                           |      |    | " 
+	WScript.Echo "                                          0-100  0-5   | "
+	WScript.Echo "                                                       | "
+	WScript.Echo "     codec: e=ematree(default) high=16Khz 16bit ad4=ad4 format"
+	
+	WScript.Quit
 end if
 
 
@@ -32,6 +38,13 @@ SourceFile = Wscript.Arguments.Item(0)
 DestZipFile =  Wscript.Arguments.Item(1)
 Volume = Wscript.Arguments.Item(2)
 Rate = Wscript.Arguments.Item(3)
+CodecFlag = Wscript.Arguments.Item(4)
+'e= ematree 8Khz 8bit a-law mono
+'high = 16Khz 16bit PCM mono
+'ad4 = 4bit 32Khz ADPCM mono a-law
+if len(CodecFlag)=0 then
+	CodecFlag="high"
+end if
 
 WScript.Echo SourceFile, Volume,Rate & vbcrlf
 
@@ -59,13 +72,10 @@ set filesys1 = Nothing
 
 
 Dim objResult, objShell
-WScript.Echo "zipping... wavs"
+WScript.Echo "zipping..."
 WScript.Echo DestZipFile
 Set objShell = WScript.CreateObject("WScript.Shell")    
-objShell.Run "pkzip.exe" & " " & DestZipFile & " " & "temp\*.wav", 0, True
-WScript.Echo "zipping... AD4s"
-WScript.Echo "AD-" & DestZipFile
-objShell.Run "pkzip.exe" & " " & "AD-" & DestZipFile & " " & "temp\*.AD4", 0, True
+objShell.Run "pkzip.exe" & " " & DestZipFile & " " & "temp\*.*", 0, True
 Set objShell = Nothing
 WScript.Quit
 'end script
@@ -99,7 +109,7 @@ For l = Lbound(arrFileLines) to UBound(arrFileLines) Step 1
 	end if
 	FName=left(arrFileLines(l),pos-1)
 	
-	'strip .wav"
+	'strip '.wav' text from csv
 	SpeakText= trim(right(arrFileLines(l),len(arrFileLines(l))-pos))
 	If right(UCase(FName),4)=".WAV" Then FName= Left(FName,Len(FName)-4)  ':Wscript.Echo "debug2 " & FName & "-" & SpeakText
 
@@ -176,13 +186,9 @@ filesys.DeleteFile strFileName
 filesys.MoveFile "trimmedtemp.wav", strFileName
  
 
-WScript.Echo "Generete AD4..."
-objShell.Run "c:\sox\sox.exe " & strFileName & " --norm  -c 1 -t .wav -b 16 -r 32000  tempconvert.wav", 0, True
-objShell.Run "AD4CONVERTER.EXE -E4 " & "tempconvert.wav " & left(strFileName,len(strFileName)-4) & ".AD4", 0, True
-filesys.DeleteFile "tempconvert.wav"
 
 
-WScript.Echo "Normalize and Convert 16Khz wav..."
+
 '
 '-c 1= number of channels of destination file: 1
 '-A = encoding of destination file: a-law
@@ -191,13 +197,29 @@ WScript.Echo "Normalize and Convert 16Khz wav..."
 '-b 8= 8 bit audio
 '
 
-'8 bit 16kHz
-'objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -A -t .wav -b 8 -r 16000  tempconvert.wav", 0, True
 
-'16 bit 16kHz
-objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -t .wav -b 16 -r 16000  tempconvert.wav", 0, True
+if CodecFlag="e" then
+  WScript.Echo "Normalize and Convert Ematree 8bit 8kHz wav..."
+  objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -A -t .wav -b 8 -r 8000  tempconvert.wav", 0, True
+  filesys.DeleteFile strFileName
+  filesys.MoveFile "tempconvert.wav", strFileName
+end if
+
+if CodecFlag="high" then
+  WScript.Echo "Normalize and Convert high quality 16bit 16kHz wav..."
+  objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -t .wav -b 16 -r 16000  tempconvert.wav", 0, True
+  filesys.DeleteFile strFileName
+  filesys.MoveFile "tempconvert.wav", strFileName
+end if
+
+if CodecFlag="ad4" then
+WScript.Echo "Generete AD4 16bit 32kHz..."
+objShell.Run "c:\sox\sox.exe " & strFileName & " --norm  -c 1 -t .wav -b 16 -r 32000  tempconvert.wav", 0, True
+objShell.Run "AD4CONVERTER.EXE -E4 " & "tempconvert.wav " & left(strFileName,len(strFileName)-4) & ".AD4", 0, True
+filesys.DeleteFile "tempconvert.wav"
 filesys.DeleteFile strFileName
-filesys.MoveFile "tempconvert.wav", strFileName
+end if
+
 
 
 Set objShell = Nothing
