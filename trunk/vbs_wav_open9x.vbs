@@ -41,7 +41,7 @@ Set oFSO = CreateObject("Scripting.FileSystemObject")
  End If
 Set oFSO = Nothing
 
-'read text, parse, seak, save
+'read text, parse, speak, convert, save
 ReadTextFile(SourceFile)
 
 'ziping
