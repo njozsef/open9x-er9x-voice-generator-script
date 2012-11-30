@@ -192,7 +192,22 @@ WScript.Echo "Trim silent..."
 objShell.Run "c:\sox\sox.exe " & strFileName & " " & "trimmedtemp.wav" & " " & "silence 1 0.01 0.5% reverse silence 1 0.01 0.5% reverse", 0, True
 filesys.DeleteFile strFileName
 filesys.MoveFile "trimmedtemp.wav", strFileName
+
  
+
+	'optional:add silence on file end (20msec)
+	'sox.exe  source dest pad 0 0.02 reverse reverse
+
+	'WScript.Echo "add 20msec silent..."
+	'objShell.Run "c:\sox\sox.exe " & strFileName & " " & "trimmedtemp.wav" & " " & " pad 0 0.02 reverse reverse", 0, True
+	'filesys.DeleteFile strFileName
+	'filesys.MoveFile "trimmedtemp.wav", strFileName
+
+
+
+
+
+
 
 '****************** sox opt ************************************
 '-c 1 = number of channels of destination file: 1
