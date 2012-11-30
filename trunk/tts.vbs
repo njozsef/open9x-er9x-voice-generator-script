@@ -9,7 +9,7 @@
 'pkzip.exe copy this folder
 
 'parameters
-dim SourceFile, DestZipFile, Volume, Rate, CodecFlag
+dim SourceFile, DestZipFile, Volume, Rate, CodecFlag, AddSilentMsec
 Dim arrFileLines()
 
 'main
@@ -18,14 +18,27 @@ if WScript.Arguments.Count =0 then
 end if
 
 if WScript.Arguments(0) = "--help" then
-	WScript.Echo "parameters:  tts.vbs source.csv dest.zip volume rate codec"
-	WScript.Echo "                                           |      |    | " 
-	WScript.Echo "                                          0-100  0-5   | "
-	WScript.Echo "                                                       | "
-	WScript.Echo "     codec: e=ematree(default) high=16Khz 16bit ad4=emartee ad4 format(not tested)"
-	
+	WScript.Echo "           parameters:  tts.vbs source.csv dest.zip volume rate [codec] [AddSilentMsec]"
+	WScript.Echo "                                                    |      |    |                     | " 
+	WScript.Echo "                                                   0-100  0-5   |                     |"
+	WScript.Echo "                                                                |                     |"
+	WScript.Echo "     codec: e=ematree(default) high=16Khz 16bit ad4=emartee ad4 format(not tested)    |"
+	WScript.Echo "                                                            Silent block the samples end"
 	WScript.Quit
 end if
+
+
+if WScript.Arguments.Count < 3 then
+	WScript.Echo "           parameters:  tts.vbs source.csv dest.zip volume rate [codec] [AddSilentMsec]"
+	WScript.Echo "                                                    |      |    |                     | " 
+	WScript.Echo "                                                   0-100  0-5   |                     |"
+	WScript.Echo "                                                                |                     |"
+	WScript.Echo "     codec: e=ematree(default) high=16Khz 16bit ad4=emartee ad4 format(not tested)    |"
+	WScript.Echo "                                                            Silent block the samples end"
+	WScript.Quit
+end if
+
+
 
 '***************************
 'csv format
@@ -108,7 +121,7 @@ For l = Lbound(arrFileLines) to UBound(arrFileLines) Step 1
 	pos=Instr(arrFileLines(l),";")
 	
 	if pos=0 then
-	Wscript.Echo "MIssing separate char":WScript.Quit
+		Wscript.Echo "MIssing separate char":WScript.Quit
 	end if
 	FName=left(arrFileLines(l),pos-1)
 	
@@ -193,17 +206,25 @@ objShell.Run "c:\sox\sox.exe " & strFileName & " " & "trimmedtemp.wav" & " " & "
 filesys.DeleteFile strFileName
 filesys.MoveFile "trimmedtemp.wav", strFileName
 
- 
 
-	'optional:add silence on file end (20msec)
+Dim SilentSec 
+if WScript.Arguments.Count = 3 then
+	'defualt 
+	AddSilentMsec=0
+End if
+
+
+if Len(AddSilentMsec)>0 Then
+	SilentSec=AddSilentMsec/1000
+	'optional:add silence all files (20msec)
 	'sox.exe  source dest pad 0 0.02 reverse reverse
-
-	'WScript.Echo "add 20msec silent..."
-	'objShell.Run "c:\sox\sox.exe " & strFileName & " " & "trimmedtemp.wav" & " " & " pad 0 0.02 reverse reverse", 0, True
-	'filesys.DeleteFile strFileName
-	'filesys.MoveFile "trimmedtemp.wav", strFileName
-
-
+	'****************************************************************************************************************************
+	WScript.Echo "add "& AddSilentMsec &" msec silent..."
+	objShell.Run "c:\sox\sox.exe " & strFileName & " " & "trimmedtemp.wav" & " " & " pad 0 "& SilentSec &" reverse reverse", 0, True
+	filesys.DeleteFile strFileName
+	filesys.MoveFile "trimmedtemp.wav", strFileName
+	'****************************************************************************************************************************
+End if
 
 
 
@@ -232,11 +253,11 @@ if CodecFlag="high" then
 end if
 
 if CodecFlag="ad4" then
-WScript.Echo "Generete AD4 16bit 32kHz a-law..."
-objShell.Run "c:\sox\sox.exe " & strFileName & " --norm  -c 1 -A -t .wav -b 16 -r 32000  tempconvert.wav", 0, True
-objShell.Run "AD4CONVERTER.EXE -E4 " & "tempconvert.wav " & left(strFileName,len(strFileName)-4) & ".AD4", 0, True
-filesys.DeleteFile "tempconvert.wav"
-filesys.DeleteFile strFileName
+	WScript.Echo "Generete AD4 16bit 32kHz a-law..."
+	objShell.Run "c:\sox\sox.exe " & strFileName & " --norm  -c 1 -A -t .wav -b 16 -r 32000  tempconvert.wav", 0, True
+	objShell.Run "AD4CONVERTER.EXE -E4 " & "tempconvert.wav " & left(strFileName,len(strFileName)-4) & ".AD4", 0, True
+	filesys.DeleteFile "tempconvert.wav"
+	filesys.DeleteFile strFileName
 end if
 
 Set objShell = Nothing
