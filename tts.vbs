@@ -162,9 +162,10 @@ If Len(strText)=0 Then Exit sub
 'Magic number, possibly voice specific (0 to 64)
 'if destination wav wrong, please decrease the Sapifiletype step -1. Sorry.
 'SAFT48kHz16BitMono = 38
+'SAFT22kHz16BitMono = 22
 'please see readme.txt
 '*********************************************************************************************************************************
-Const SapiFileType=38
+Const SapiFileType=22
 
 With CreateObject("Scripting.FileSystemObject")
  strFile=.BuildPath(.GetParentFolderName(WScript.ScriptFullName), strFileName & ".wav")
@@ -246,8 +247,8 @@ if CodecFlag="e" then
 end if
 
 if CodecFlag="high" then
-  WScript.Echo "Normalize and Convert high quality 16bit 16kHz mono wav..."
-  objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -t .wav -b 16 -r 16000  tempconvert.wav", 0, True
+  WScript.Echo "Normalize and Convert high quality 16bit 22kHz mono wav..."
+  objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -t .wav -b 16 -r 22000  tempconvert.wav", 0, True
   filesys.DeleteFile strFileName
   filesys.MoveFile "tempconvert.wav", strFileName
 end if
