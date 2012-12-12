@@ -12,8 +12,11 @@ c:\> cscript.exe tts.vbs en-stock_open9x.csv en-stock.zip 100 0  [codec] [AddSil
 This code generate wavs and AD4 from csv on .\temp folder and .\ folder zip file
 with default (actual TTS voice)
 
-NOT TESTED THIS PROJECT!!!!
+PROJECT TESTED with emartee audio board!!!!
 
+option: AD4	best results
+	e	best results
+	high	for post production (not upload the emartee)
 
 REQUIRED:
 9x rc transmitter with VOICE-mod
@@ -49,6 +52,7 @@ if necessary, replace the codec, from vbs file line: ~168
 REMARK:
 Magic number: (wav output format):
 Magic number, possibly voice specific (0 to 64) please decrement if generate wrong wavs.
+best results for native speak engine settings (usually 22khz 16 bit mono)
 
 
 ----------------------------------------------------------------------------------------------------
