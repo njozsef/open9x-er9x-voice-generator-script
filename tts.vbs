@@ -121,23 +121,27 @@ For l = Lbound(arrFileLines) to UBound(arrFileLines) Step 1
 	pos=Instr(arrFileLines(l),";")
 	
 	if pos=0 then
-		Wscript.Echo "MIssing separate char":WScript.Quit
+		Wscript.Echo "MIssing separate char"   ':WScript.Quit
 	end if
-	FName=left(arrFileLines(l),pos-1)
-	
-	'strip '.wav' text from csv
-	SpeakText= trim(right(arrFileLines(l),len(arrFileLines(l))-pos))
-	If right(UCase(FName),4)=".WAV" Then FName= Left(FName,Len(FName)-4)  ':Wscript.Echo "debug2 " & FName & "-" & SpeakText
 
-	'find second ; char and cut
-	pos=0
-	pos=Instr(SpeakText,";")
-	If pos>0 then SpeakText= Trim(left(SpeakText,pos-1))
-	Wscript.Echo "********************************* " & SpeakText
-	If Len(SpeakText)>0 then
-		Wscript.Echo FName & "-" & SpeakText
-		call generatefile("temp\"& FName,SpeakText)
-	End if
+
+	if pos>0 then
+		FName=left(arrFileLines(l),pos-1)
+		
+		'strip '.wav' text from csv
+		SpeakText= trim(right(arrFileLines(l),len(arrFileLines(l))-pos))
+		If right(UCase(FName),4)=".WAV" Then FName= Left(FName,Len(FName)-4)  ':Wscript.Echo "debug2 " & FName & "-" & SpeakText
+
+		'find second ; char and cut
+		pos=0
+		pos=Instr(SpeakText,";")
+		If pos>0 then SpeakText= Trim(left(SpeakText,pos-1))
+		Wscript.Echo "********************************* " & SpeakText
+		If Len(SpeakText)>0 then
+			Wscript.Echo FName & "-" & SpeakText
+			call generatefile("temp\"& FName,SpeakText)
+		End if
+	end if
 Next
 
 
@@ -240,11 +244,19 @@ End if
 '--norm = normalize
 '***************************************************************
 if CodecFlag="e" then
-  WScript.Echo "Normalize and Convert Emartee 8bit 8kHz wav..."
-  objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -A -t .wav -b 8 -r 8000  tempconvert.wav", 0, True
+  WScript.Echo "Normalize and Convert Emartee 8bit 16kHz wav..."
+  objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1 -t .wav -b 8 -r 16000  tempconvert.wav", 0, True
+  filesys.DeleteFile strFileName
+  filesys.MoveFile "tempconvert.wav", strFileName
+  objShell.Run "c:\sox\sox.exe " & strFileName & " tempconvert.wav  gain -6 treble +3 ", 0, True
   filesys.DeleteFile strFileName
   filesys.MoveFile "tempconvert.wav", strFileName
 end if
+
+
+
+
+
 
 if CodecFlag="high" then
   WScript.Echo "Normalize and Convert high quality 16bit 22kHz mono wav..."
@@ -254,8 +266,11 @@ if CodecFlag="high" then
 end if
 
 if CodecFlag="ad4" then
-	WScript.Echo "Generete AD4 16bit 32kHz a-law..."
-	objShell.Run "c:\sox\sox.exe " & strFileName & " --norm  -c 1 -A -t .wav -b 16 -r 32000  tempconvert.wav", 0, True
+	objShell.Run "c:\sox\sox.exe " & strFileName & " --norm -c 1  -t .wav -b 16 -r 32000  tempconvert.wav", 0, True
+	filesys.DeleteFile strFileName
+	filesys.MoveFile "tempconvert.wav", strFileName
+	WScript.Echo "Generete AD4 32kHz..."
+	objShell.Run "c:\sox\sox.exe " & strFileName & " tempconvert.wav  gain -6 treble +3 ", 0, True
 	objShell.Run "AD4CONVERTER.EXE -E4 " & "tempconvert.wav " & left(strFileName,len(strFileName)-4) & ".AD4", 0, True
 	filesys.DeleteFile "tempconvert.wav"
 	filesys.DeleteFile strFileName
