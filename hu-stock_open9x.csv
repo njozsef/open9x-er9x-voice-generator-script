@@ -115,12 +115,12 @@
 0116.wav;volt
 0117.wav;amper
 0118.wav;amper
-0119.wav;méter per másodperc
-0120.wav;méter per másodperc
+0119.wav;méterper-másodperc
+0120.wav;méterper-másodperc
 0121.wav;
 0122.wav;
-0123.wav;kilóméter per óra
-0124.wav;kilóméter per óra
+0123.wav;kilóméterper-óra
+0124.wav;kilóméterper-óra
 0125.wav;méter
 0126.wav;méter
 0127.wav;fok
@@ -150,39 +150,39 @@
 0151.wav;g!
 0152.wav;g!
 0160.wav; 
-0161.wav;egész egy tized
-0162.wav;egész két tized
-0163.wav;egész három tized
-0164.wav;egész négy tized
-0165.wav;egész öt tized
-0166.wav;egész hat tized
-0167.wav;egész hét tized
-0168.wav;egész nyolc tized
-0169.wav;egész kilenc tized
+0161.wav;egész egy-tized
+0162.wav;egész két-tized
+0163.wav;egész három-tized
+0164.wav;egész négy-tized
+0165.wav;egész öt-tized
+0166.wav;egész hat-tized
+0167.wav;egész hét-tized
+0168.wav;egész nyolc-tized
+0169.wav;egész kilenc-tized
 0244.wav;trimmer középen
-0231.wav;adóakumulátor, lemerült.
+0231.wav;adóakumulátor lemerült.
 0230.wav;tik! tak.
-0232.wav;Gázkar nincs alapon.
-0233.wav;Kapcsolók nincsenek alapon.
-0245.wav;Szia!, Open 9 iksz vagyok.  
-0250.wav;tik! tak.
-0251.wav;Tíz másodperc,
-0252.wav;Húsz másodperc,
-0253.wav;Harminc -másodperc!
-0256.wav;Kerék!, be!
-0257.wav;Kerék!, ki!
-0258.wav;féklap!, be!
-0259.wav;féklap!, ki!
-0260.wav;tréner!, be!
-0261.wav;tréner!, ki!
-0262.wav;motor!, kikapcsolva!
+0232.wav;VESZÉLY!, Gázkar nincs-alapon.
+0233.wav;VESZÉLY!, Kapcsolók nincsenek-alapon.
+0245.wav;Szia!, Open-9-iksz-vagyok.
+0250.wav;tik tak.
+0251.wav;Tíz-másodperc
+0252.wav;Húsz-másodperc
+0253.wav;Harminc-másodperc!
+0256.wav;Kerék, behúzva
+0257.wav;Kerék, kiengedve!
+0258.wav;féklap, be!
+0259.wav;féklap, ki!
+0260.wav;tréner, be!
+0261.wav;tréner, ki!
+0262.wav;motor, kikapcsolva!
 0263.wav;túl magas!
 0264.wav;túl alacsony!
-0265.wav;Az akkumulátor, lemerült!
-0266.wav;crow!, be!
-0267.wav;crow!, ki!
-0268.wav;rádiójel!, kicsi!
-0269.wav;rádiójel!, kritikus!
+0265.wav;VESZÉLY!, Az akkumlátor lemerült!
+0266.wav;krow, be!
+0267.wav;krow!, ki!
+0268.wav;VESZÉLY!, vételi szint, alacsony
+0269.wav;VESZÉLY!, vételi szint, kritikus
 0270.wav;nagy sebességû, üzemmód!, aktív!
 0271.wav;vitorlázó, mód!, be!
 0272.wav;normál mód!, be!
@@ -199,3 +199,116 @@
 0283.wav;kilences-repülés üzemmód!
 0284.wav;vario!, be!
 0285.wav;vario!, ki!
+0400;VESZÉLY!, Hibás-felszállási-konfiguráció!, Ellenõrizd a rádiót!,
+0401;Tirex 450
+0402;Oktokopter
+0403;didzsiáj. 650
+0404;Multiwi
+0405;Piadzset
+0406;Szkájwolker
+0407;izi sztár.
+0408;
+0409;
+0410;
+0411;
+0412;
+0413;
+0414;
+0415;
+0416;
+0417;VESZÉLY!, Vevõakku feszültség alcsony.
+0418;VESZÉLY!, Nincs telemetria
+0419;Motor energia letiltva.
+0420;
+0421
+0422
+0423
+0424
+0425
+0426
+0427
+0428
+0429
+0430
+0431
+0432
+0433
+0434
+0435
+0436
+0437
+0438
+0439
+0440
+0441
+0442
+0443
+0444
+0445
+0446
+0447
+0448
+0449
+0450
+0451
+0452
+0453
+0454
+0455
+0456
+0457
+0458
+0459
+0460
+0461
+0462
+0463
+0464
+0465
+0466
+0467
+0468
+0469
+0470
+0471
+0472
+0473
+0474
+0475
+0476
+0477
+0478
+0479
+0480
+0481
+0482
+0483
+0484
+0485
+0486
+0487
+0488
+0489
+0490
+0491
+0492
+0493
+0494
+0495
+0496
+0497
+0498
+0499
+0500
+0501
+0502
+0503
+0504
+0505
+0506
+0507
+0508
+0509
+0510
+0511
+0512
