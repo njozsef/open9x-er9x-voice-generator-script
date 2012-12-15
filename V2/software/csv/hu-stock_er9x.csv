@@ -24,12 +24,12 @@
 0023;Veszély!!!;
 0024;Láb;
 0025;Láb;
-0026;Kapcsolj Ki!!;
+0026;Ugye nem felejtettél el!!;
 0027;Szia!;
 0028;Szia E, eR, 9 iksz vagyok!, Jó repülést!;
 0029;Határérték;
 0030;;
-0031;Motor akku feszültség: alacsony!;
+0031;Motor akku feszültség alacsony!;
 0032;Feszültség;
 0033;Áram;
 0034;Magasság;
@@ -259,7 +259,7 @@
 0258;;
 0259;;
 0260;;Bemutatkozó szöveg modellmemóriából //* nm biztos, hogy kell
-0261;Szia E, eR, 9 iksz vagyok!, Jó repülést!;;
+0261;Szia E, eR, 9 iksz vagyok! Kérem ellenõrizze a modellmemóriát felszállás elõtt!
 0262;;
 0263;;
 0264;;
